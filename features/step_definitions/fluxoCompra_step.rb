@@ -7,7 +7,7 @@ Dado("que eu acesse a loja virtual") do
     visit 'http://www.automationpractice.com'
 end
   
-Quando("realizo uma compra") do
+Quando("realizo uma compra como usuário prospect") do
     #REALIZO A NAVEGAÇÃO ATÉ O PRODUTO DESEJADO
     PageObjects.menuPrincipalDresses.hover
     PageObjects.submenuCasualDresses.click
