@@ -1,8 +1,6 @@
 require 'capybara/cucumber'
 require 'selenium-webdriver'
 require 'rspec'
-require 'openssl'
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 require 'faker'
 require 'site_prism'
 

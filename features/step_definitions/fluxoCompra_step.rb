@@ -20,7 +20,8 @@ Quando("realizo uma compra como usuário prospect") do
     listaProduto.size
     @produto = listaProduto[0].find('.product-name').text
     
-    #FLUXO DE COMPRA PELO IFRAME DO PRODUTO
+    ##################         FLUXO DE COMPRA PELO IFRAME DO PRODUTO                      ##############################
+
     within_frame(PageObjects.iframeProduto) do
         #GUARDO A INFORMAÇÃO DO PREÇO DO PRODUTO NA VARIAVEL @PRECO_PRODUTO
         @preco_produto = PageObjects.precoProduto.text
@@ -28,7 +29,8 @@ Quando("realizo uma compra como usuário prospect") do
         PageObjects.botaoAddToCart.click
     end
 
-    #TELA DE INCLUSAO DO PRODUTO NO CARRINHO COM SUCESSO
+    ##################         TELA DE INCLUSAO DO PRODUTO NO CARRINHO COM SUCESSO         #####################################################
+    
     #VALIDA CONFIRMAÇÃO NOME DO PRODUTO
     expect(PageObjects.nomeProdutoToAddCart.text).to eql @produto
     #VALIDA CONFIRMAÇÃO DO VALOR
@@ -58,7 +60,8 @@ Quando("realizo uma compra como usuário prospect") do
     #CLIQUE NO BOTÃO "PROCEED TO CHECKOUT" PARA SEGUIR PARA A PRÓXIMA TELA
     PageObjects.botaoProceedToCheckout.click
 
-    #TELA SHOPPING-CART SUMMARY
+    ################################             TELA SHOPPING-CART SUMMARY              ##########################################################
+
     #REALIZANDO A VALIDAÇÃO DO CAMPO "Unit price" DA TABELA
     @preco_unid_sumario = PageObjects.precoProdutoSumario.text
     expect(@preco_unid_sumario).to eql @preco_produto
@@ -82,7 +85,7 @@ Quando("realizo uma compra como usuário prospect") do
     @preco_total_sem_taxa_string = PageObjects.precoTotalSemTaxaSumario.text
     expect(@preco_total_sem_taxa_string).to eql @preco_total
 
-    #REALIZANDO CONVERSAO DE STRING PARA INT E CALCULO VALOR TOTAL SEM TAXAS + TAXAS 
+    #REALIZANDO CONVERSAO DE STRING PARA INT E CALCULO VALOR TOTAL SEM TAXAS + AS TAXAS PARA VERIFICAR SE O VALOR FOI CALCULADO CORRETAMENTE
     @preco_total_sem_taxa_replace = @preco_total_sem_taxa_string.gsub(@preco_total_sem_taxa_string, '28')
     @preco_total_sem_taxa_int = @preco_total_sem_taxa_replace.to_i
 
@@ -96,19 +99,20 @@ Quando("realizo uma compra como usuário prospect") do
     @preco_total_taxa_final = @preco_total_taxa_string.gsub(@preco_total_taxa_string, "$#{@preco_total_taxa_string}.00")
     
 
-    #VALIDA CAMPO "TOTAL" MAIS TAXAS
+    #VALIDA CAMPO "TOTAL" + TAXAS
     @preco_total_taxa_final_sumario = PageObjects.precoTotalComTaxaSumario.text
     expect(@preco_total_taxa_final_sumario).to eql @preco_total_taxa_final
 
     #CLIQUE NO BOTÃO "PROCEED TO CHECKOUT" PARA SEGUIR PARA A PRÓXIMA TELA
     PageObjects.botaoProceedToCheckout.click
 
-    #TELA DE AUTHENTICATION
+    ##################################               TELA DE AUTHENTICATION                    ################################################
+
     PageObjects.criarEmail.set @email
     PageObjects.botaoCreateAnAccount.click
 
 
-    #TELA DE YOUR PERSONAL INFORMATION E EFETUAR CADASTRO DE USUÁRIO PROSPECT
+    #################         TELA DE YOUR PERSONAL INFORMATION E EFETUAR CADASTRO DE USUÁRIO PROSPECT    #####################################
     FormCadastro.nomeacao.click
     FormCadastro.primeiroNome.set @primeiroNome
     FormCadastro.sobrenome.set @sobrenome
@@ -122,8 +126,10 @@ Quando("realizo uma compra como usuário prospect") do
     FormCadastro.anoNasc.select_option
     FormCadastro.informativo.click
     FormCadastro.ofertas.click
+
     expect(find('#firstname').value).to eql @primeiroNome
     expect(find('#lastname').value).to eql @sobrenome
+
     FormCadastro.empresa.set @empresa
     FormCadastro.enderecoPrincipal.set @endereco
     FormCadastro.complemento.set @complemento
@@ -140,8 +146,9 @@ Quando("realizo uma compra como usuário prospect") do
 
     PageObjects.registro.click
 
-    #TELA DE ADDRESSES
-    #VALIDAÇÃO DE ENDEREÇO DE ENTREGA
+    ######################################            TELA DE ADDRESSES               ########################################################
+
+     #VALIDAÇÃO DE ENDEREÇO DE ENTREGA
     dadosEndEntrega = Array.new
     dadosEndEntrega = PageObjects.enderecoEntrega.all('li')
     dadosEndEntrega.size
@@ -177,7 +184,8 @@ Quando("realizo uma compra como usuário prospect") do
     #CLIQUE NO BOTÃO "PROCEED TO CHECKOUT"
     PageObjects.botaoConfirmFrete.click
 
-    ###########           TELA DE "PLEASE CHOOSE YOUR PAYMENT METHOD"          #################
+    ###################           TELA DE "PLEASE CHOOSE YOUR PAYMENT METHOD"          ####################################
+
     @preco_total_produto = PageObjects.precoTotalProdPagamento.text
     expect(@preco_total_produto).to eql @preco_unid_sumario
     @preco_total_frete = PageObjects.precoTotalFretePagamento.text
